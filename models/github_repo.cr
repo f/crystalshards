@@ -39,12 +39,19 @@ class GithubRepo
       headers = HTTP::Headers.new
       headers["User-Agent"] = "crystalshards"
       response = client.get("/repos/#{full_name}/releases", headers)
-      p "pulling..."
+      p "pulling release of #{full_name}..."
       releases = JSON.parse(response.body)
       if releases.size > 0
         releases[0]["tag_name"].to_s
       else
-        ""
+        response = client.get("/repos/#{full_name}/tags", headers)
+        p "release not found, pulling tag of #{full_name}..."
+        tags = JSON.parse(response.body)
+        if tags.size > 0
+          tags[0]["name"].to_s
+        else
+          ""
+        end
       end
     end
   end
