@@ -1,11 +1,11 @@
 name: crystalshards
-version: 0.1.0
-author: Luis Ferreira
+version: 0.2.0
+author: Fatih Kadir Akın
 
 dependencies:
   kemal:
     github: sdogruyol/kemal
-    version: 0.15.1
+    version: 0.17.4
   emoji:
     github: veelenga/emoji.cr
-    version: 0.1.0
+    version: 0.2.0

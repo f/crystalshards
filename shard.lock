@@ -2,17 +2,21 @@ version: 1.0
 shards:
   emoji:
     github: veelenga/emoji.cr
-    version: 0.1.0
+    version: 0.2.0
 
   kemal:
     github: sdogruyol/kemal
-    version: 0.15.1
+    version: 0.17.4
 
   kilt:
     github: jeromegn/kilt
     version: 0.3.3
 
+  multipart:
+    github: RX14/multipart.cr
+    version: 0.1.1
+
   radix:
     github: luislavena/radix
-    version: 0.3.1
+    version: 0.3.5
 

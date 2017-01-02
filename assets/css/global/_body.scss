@@ -33,11 +33,18 @@
 
   &-more {
     float: right;
-    color: $color-purple;
+    background-color: $color-purple;
     letter-spacing: 1px;
-    font-size: toRem(14px);
+    font-size: .875rem;
+    padding: 3px 5px;
+    border-radius: 3px;
+    color: #fff;
+    font-size: 12px;
+    opacity: 0.5;
+    transition-duration: 100ms;
+    box-shadow: 0 1px 0 rgb(59, 30, 86);
     &:hover {
-      opacity: 0.7;
+      opacity: 1;
     }
   }
 }

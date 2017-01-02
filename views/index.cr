@@ -13,7 +13,7 @@ class Views::Index
 
   getter :trending_repos, :popular_repos, :recent_repos, :crystal_repos, :repos_count, :sort, :filter, :total_count, :page
 
-  def initialize(total_repos, repos, trending, popular, recently, sort, filter, page)
+  def initialize(total_repos, repos, trending, popular, recently, sort, filter, page, params : Kemal::ParamParser)
     @repos_count = repos.total_count
     @crystal_repos = repos.items
     @trending_repos = trending.items
@@ -21,6 +21,7 @@ class Views::Index
     @recent_repos = recently.items
     @total_count = total_repos
     @page = page
+    @params = params
 
     @sort = sort
     @filter = filter

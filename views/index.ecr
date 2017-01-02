@@ -54,7 +54,11 @@
       </svg>
       CrystalShards
     </a>
+    <% if @params.url.has_key? "user" %>
+    <a href="<%= @params.url["user"] %>/?sort=updated&page=1" class="all-list"><b><%= total_count %></b> total shards by @<%= @params.url["user"] %> →</a>
+    <% else %>
     <a href="/?sort=updated&page=1" class="all-list"><b><%= total_count %></b> total shards →</a>
+    <% end %>
   </div>
 </header>
 <!-- /.Header -->
@@ -62,7 +66,7 @@
 
 <div class="Search">
   <div class="width">
-    <form action="">
+    <form action="/">
       <svg class="icon">
         <use xlink:href="#icon-search"></use>
       </svg>
@@ -76,171 +80,187 @@
 <main class="Body" role="main">
   <div class="width">
 
-    <section class="List">
+    <% if recent_repos.size == 0 %>
+    <div class="Alert">
+      <h3 class="Alert_title">This user has no shards yet. But you can have.</h3>
+      <pre class="init _big"><code>crystal init lib <b>awesome-crystal-project</a></b></code></pre>
+    </div>
+    <% end %>
 
     <% if filter.empty? && sort.empty? %>
-      <h2 class="List_title">
-        <svg class="icon">
-          <use xlink:href="#icon-fire"></use>
-        </svg>
-        TRENDING
-      </h2>
+      <% if trending_repos.size > 0 %>
+      <section class="List">
+        <h2 class="List_title">
+          <svg class="icon">
+            <use xlink:href="#icon-fire"></use>
+          </svg>
+          TRENDING
+        </h2>
 
-      <ul class="Shards">
-        <% trending_repos.each do |repo| %>
-        <li class="Shard">
-          <div class="Shard-content">
-            <h3 class="Shard_title">
-              <a href="<%= repo.html_url %>"><%= repo.name %></a>
-            </h3>
-            <p class="Shard_desc">
-              <% unless repo.description.try &.strip.empty? %>
-                <%= repo.description %>
-              <% end %>
-            </p>
-          </div>
-          <footer class="Shard-meta">
-            <ul>
-              <li class="Shard-meta_author">
-                <a href="/<%= repo.owner.login %>">
-                  <img src="<%= repo.owner.avatar_url %>">
-                  <%= repo.owner.login %>
-                </a>
-              </li>
-              <li class="Shard-meta_stars">
-                <a href="<%= repo.html_url %>/stargazers">
-                  <svg class="icon">
-                    <use xlink:href="#icon-star"></use>
-                  </svg>
-                  <%= repo.stargazers_count %>
-                </a>
-              </li>
-              <li class="Shard-meta_version">
-                <a href="<%= repo.html_url %>/commits">
-                  <svg class="icon">
-                    <use xlink:href="#icon-recently"></use>
-                  </svg>
-                  <%= human_time(repo.pushed_at) %>
-                </a>
-              </li>
-            </ul>
-          </footer>
-        </li>
+        <ul class="Shards">
+          <% trending_repos.each do |repo| %>
+          <li class="Shard">
+            <div class="Shard-content">
+              <h3 class="Shard_title">
+                <a href="<%= repo.html_url %>"><%= repo.name %></a>
+              </h3>
+              <p class="Shard_desc">
+                <% unless repo.description.try &.strip.empty? %>
+                  <%= repo.description %>
+                <% end %>
+              </p>
+            </div>
+            <footer class="Shard-meta">
+              <ul>
+                <li class="Shard-meta_author">
+                  <a href="/<%= repo.owner.login %>">
+                    <img src="<%= repo.owner.avatar_url %>">
+                    <%= repo.owner.login %>
+                  </a>
+                </li>
+                <li class="Shard-meta_stars">
+                  <a href="<%= repo.html_url %>/stargazers">
+                    <svg class="icon">
+                      <use xlink:href="#icon-star"></use>
+                    </svg>
+                    <%= repo.stargazers_count %>
+                  </a>
+                </li>
+                <li class="Shard-meta_version">
+                  <a href="<%= repo.html_url %>/commits">
+                    <svg class="icon">
+                      <use xlink:href="#icon-recently"></use>
+                    </svg>
+                    <%= human_time(repo.pushed_at) %>
+                  </a>
+                </li>
+              </ul>
+            </footer>
+          </li>
+          <% end %>
+        </ul>
+      </section>
+      <% end %>
+
+      <% if popular_repos.size > 0 %>
+      <section class="List">
+        <h2 class="List_title">
+          <svg class="icon">
+            <use xlink:href="#icon-star"></use>
+          </svg>
+          <a href="/?sort=stars&page=1">ALL TIME POPULAR</a>
+        </h2>
+
+        <ul class="Shards">
+          <% popular_repos.each do |repo| %>
+          <li class="Shard">
+            <div class="Shard-content">
+              <h3 class="Shard_title">
+                <a href="<%= repo.html_url %>"><%= repo.name %></a>
+              </h3>
+              <p class="Shard_desc">
+                <% unless repo.description.try &.strip.empty? %>
+                  <%= repo.description %>
+                <% end %>
+              </p>
+            </div>
+            <footer class="Shard-meta">
+              <ul>
+                <li class="Shard-meta_author">
+                  <a href="/<%= repo.owner.login %>">
+                    <img src="<%= repo.owner.avatar_url %>">
+                    <%= repo.owner.login %>
+                  </a>
+                </li>
+                <li class="Shard-meta_stars">
+                  <a href="<%= repo.html_url %>/stargazers">
+                    <svg class="icon">
+                      <use xlink:href="#icon-star"></use>
+                    </svg>
+                    <%= repo.stargazers_count %>
+                  </a>
+                </li>
+                <li class="Shard-meta_version">
+                  <a href="<%= repo.html_url %>/commits">
+                    <svg class="icon">
+                      <use xlink:href="#icon-recently"></use>
+                    </svg>
+                    <%= human_time(repo.pushed_at) %>
+                  </a>
+                </li>
+              </ul>
+            </footer>
+          </li>
+          <% end %>
+        </ul>
+        <% if @params.url.has_key? "user" %>
+        <a class="List-more" href="/<%= @params.url["user"] %>?sort=stars&page=1">MORE...</a>
+        <% else %>
+        <a class="List-more" href="/?sort=stars&page=1">MORE...</a>
         <% end %>
-      </ul>
-    </section>
+      </section>
+      <% end %>
 
-    <section class="List">
-      <h2 class="List_title">
-        <svg class="icon">
-          <use xlink:href="#icon-star"></use>
-        </svg>
-        <a href="/?sort=stars&page=1">ALL TIME POPULAR</a>
-      </h2>
+      <% if recent_repos.size > 0 %>
+      <section class="List">
+        <h2 class="List_title">
+          <svg class="icon">
+            <use xlink:href="#icon-recently"></use>
+          </svg>
+          <a href="/?sort=updated&page=1">RECENTLY UPDATED</a>
+        </h2>
 
-      <ul class="Shards">
-        <% popular_repos.each do |repo| %>
-        <li class="Shard">
-          <div class="Shard-content">
-            <h3 class="Shard_title">
-              <a href="<%= repo.html_url %>"><%= repo.name %></a>
-            </h3>
-            <p class="Shard_desc">
-              <% unless repo.description.try &.strip.empty? %>
-                <%= repo.description %>
-              <% end %>
-            </p>
-          </div>
-          <footer class="Shard-meta">
-            <ul>
-              <li class="Shard-meta_author">
-                <a href="/<%= repo.owner.login %>">
-                  <img src="<%= repo.owner.avatar_url %>">
-                  <%= repo.owner.login %>
-                </a>
-              </li>
-              <li class="Shard-meta_stars">
-                <a href="<%= repo.html_url %>/stargazers">
-                  <svg class="icon">
-                    <use xlink:href="#icon-star"></use>
-                  </svg>
-                  <%= repo.stargazers_count %>
-                </a>
-              </li>
-              <li class="Shard-meta_version">
-                <a href="<%= repo.html_url %>/commits">
-                  <svg class="icon">
-                    <use xlink:href="#icon-recently"></use>
-                  </svg>
-                  <%= human_time(repo.pushed_at) %>
-                </a>
-              </li>
-            </ul>
-          </footer>
-        </li>
+        <ul class="Shards">
+          <% recent_repos.each do |repo| %>
+          <li class="Shard">
+            <div class="Shard-content">
+              <h3 class="Shard_title">
+                <a href="<%= repo.html_url %>"><%= repo.name %></a>
+              </h3>
+              <p class="Shard_desc">
+                <% unless repo.description.try &.strip.empty? %>
+                  <%= repo.description %>
+                <% end %>
+              </p>
+            </div>
+            <footer class="Shard-meta">
+              <ul>
+                <li class="Shard-meta_author">
+                  <a href="/<%= repo.owner.login %>">
+                    <img src="<%= repo.owner.avatar_url %>">
+                    <%= repo.owner.login %>
+                  </a>
+                </li>
+                <li class="Shard-meta_stars">
+                  <a href="<%= repo.html_url %>/stargazers">
+                    <svg class="icon">
+                      <use xlink:href="#icon-star"></use>
+                    </svg>
+                    <%= repo.stargazers_count %>
+                  </a>
+                </li>
+                <li class="Shard-meta_version">
+                  <a href="<%= repo.html_url %>/commits">
+                    <svg class="icon">
+                      <use xlink:href="#icon-recently"></use>
+                    </svg>
+                    <%= human_time(repo.pushed_at) %>
+                  </a>
+                </li>
+              </ul>
+            </footer>
+          </li>
+          <% end %>
+        </ul>
+        <% if @params.url.has_key? "user" %>
+        <a class="List-more" href="/<%= @params.url["user"] %>?sort=updated&page=1">MORE...</a>
+        <% else %>
+        <a class="List-more" href="/?sort=updated&page=1">MORE...</a>
         <% end %>
-      </ul>
-      <a class="List-more" href="/?sort=stars&page=1">MORE...</a>
-    </section>
-
-
-    <section class="List">
-
-      <h2 class="List_title">
-        <svg class="icon">
-          <use xlink:href="#icon-recently"></use>
-        </svg>
-        <a href="/?sort=updated&page=1">RECENTLY UPDATED</a>
-      </h2>
-
-      <ul class="Shards">
-
-        <% recent_repos.each do |repo| %>
-        <li class="Shard">
-          <div class="Shard-content">
-            <h3 class="Shard_title">
-              <a href="<%= repo.html_url %>"><%= repo.name %></a>
-            </h3>
-            <p class="Shard_desc">
-              <% unless repo.description.try &.strip.empty? %>
-                <%= repo.description %>
-              <% end %>
-            </p>
-          </div>
-          <footer class="Shard-meta">
-            <ul>
-              <li class="Shard-meta_author">
-                <a href="/<%= repo.owner.login %>">
-                  <img src="<%= repo.owner.avatar_url %>">
-                  <%= repo.owner.login %>
-                </a>
-              </li>
-              <li class="Shard-meta_stars">
-                <a href="<%= repo.html_url %>/stargazers">
-                  <svg class="icon">
-                    <use xlink:href="#icon-star"></use>
-                  </svg>
-                  <%= repo.stargazers_count %>
-                </a>
-              </li>
-              <li class="Shard-meta_version">
-                <a href="<%= repo.html_url %>/commits">
-                  <svg class="icon">
-                    <use xlink:href="#icon-recently"></use>
-                  </svg>
-                  <%= human_time(repo.pushed_at) %>
-                </a>
-              </li>
-            </ul>
-          </footer>
-        </li>
-        <% end %>
-
-      </ul>
-
-      <% else %>
-
-
+      </section>
+      <% end %>
+    <% else %>
+      <section class="List">
         <% if !filter.empty? && repos_count.to_i > 0 %>
           <h2 class="List_title List_title--search">
           <% if repos_count.to_i == 1 %>
@@ -262,7 +282,6 @@
         <% end %>
 
         <ul class="Shards">
-
           <% crystal_repos.each do |repo| %>
           <li class="Shard">
             <div class="Shard-content">
@@ -306,31 +325,31 @@
           </li>
           <% end %>
         </ul>
-      <% end %>
-      <% if repos_count.to_i > 0 %>
+      <% if repos_count.to_i > 0 && page.nil? %>
       <a class="List-more" href="/?sort=updated&page=1">MORE...</a>
       <% end %>
-    </section>
 
-    <% if repos_count.to_i > 100 && (!filter.empty? || !sort.empty?) %>
-		<div class="Pagination">
-      <div class="Pagination-container prev ">
-        <% if page > 1 %>
-        <a href="/?<%= filter.empty? ? "" : "filter=#{filter}" %>&<%= sort.empty? ? "" : "sort=#{sort}" %>&page=<%= page-1 %>" class="Pagination_link">
-          Previous Page
-        </a>
-        <% end %>
+      <% if repos_count.to_i > 100 && (!filter.empty? || !sort.empty?) %>
+  		<div class="Pagination">
+        <div class="Pagination-container prev ">
+          <% if page > 1 %>
+          <a href="/?<%= filter.empty? ? "" : "filter=#{filter}" %>&<%= sort.empty? ? "" : "sort=#{sort}" %>&page=<%= page-1 %>" class="Pagination_link">
+            Previous Page
+          </a>
+          <% end %>
+        </div>
+        <div class="Pagination-container next">
+          <% total_page = ((total_count - (total_count % 100)) / 100) + ((total_count % 100 > 0) ? 1 : 0) %>
+          <% if (page < total_page) %>
+          <a href="/?<%= filter.empty? ? "" : "filter=#{filter}" %>&<%= sort.empty? ? "" : "sort=#{sort}" %>&page=<%= page+1 %>" class="Pagination_link">
+            Next Page
+          </a>
+          <% end %>
+        </div>
       </div>
-      <div class="Pagination-container next">
-        <% total_page = ((total_count - (total_count % 100)) / 100) + ((total_count % 100 > 0) ? 1 : 0) %>
-        <% if (page < total_page) %>
-        <a href="/?<%= filter.empty? ? "" : "filter=#{filter}" %>&<%= sort.empty? ? "" : "sort=#{sort}" %>&page=<%= page+1 %>" class="Pagination_link">
-          Next Page
-        </a>
-        <% end %>
-      </div>
-    </div>
-    <% end %>
+      <% end %>
+    </section>
+  <% end %>
   </div>
 </main>
 <!-- /.Body -->
@@ -338,6 +357,10 @@
 
 <footer class="Footer" role="contentinfo">
   <div class="width">
+    <p>
+      Star CrystalShards on GitHub
+    </p>
+    <a class="github-button" href="https://github.com/f/crystalshards" data-icon="octicon-star" data-style="mega" data-count-href="/f/crystalshards/stargazers" data-count-api="/repos/f/crystalshards#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star f/crystalshards on GitHub">Star</a>
   </div>
 </footer>
 <!-- /.Footer -->
@@ -351,5 +374,6 @@
   ga('create', 'UA-74960931-1', 'auto');
   ga('send', 'pageview');
 </script>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>
 </html>
