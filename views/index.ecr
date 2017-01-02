@@ -290,6 +290,7 @@
             <div class="Shard-content">
               <h3 class="Shard_title">
                 <a href="<%= repo.html_url %>"><%= filter.empty? ? repo.name : repo.name.gsub(Regex.new(filter, Regex::Options::IGNORE_CASE), "<mark>#{filter}</mark>") %></a>
+                <span class="Shard_version"><%= repo.latest_release %></span>
               </h3>
               <p class="Shard_desc">
                 <% unless repo.description.try &.strip.empty? %>
