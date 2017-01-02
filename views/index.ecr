@@ -103,6 +103,7 @@
             <div class="Shard-content">
               <h3 class="Shard_title">
                 <a href="<%= repo.html_url %>"><%= repo.name %></a>
+                <span class="Shard_version"><%= repo.latest_release %></span>
               </h3>
               <p class="Shard_desc">
                 <% unless repo.description.try &.strip.empty? %>
@@ -157,6 +158,7 @@
             <div class="Shard-content">
               <h3 class="Shard_title">
                 <a href="<%= repo.html_url %>"><%= repo.name %></a>
+                <span class="Shard_version"><%= repo.latest_release %></span>
               </h3>
               <p class="Shard_desc">
                 <% unless repo.description.try &.strip.empty? %>
@@ -216,6 +218,7 @@
             <div class="Shard-content">
               <h3 class="Shard_title">
                 <a href="<%= repo.html_url %>"><%= repo.name %></a>
+                <span class="Shard_version"><%= repo.latest_release %></span>
               </h3>
               <p class="Shard_desc">
                 <% unless repo.description.try &.strip.empty? %>

@@ -1,10 +1,13 @@
 require "json"
 require "html"
 
+VERSION_CACHE = TimeCache(String, String).new(12.hours)
+
 class GithubRepo
   JSON.mapping({
     name: { type: String },
     html_url: { type: String },
+    full_name: { type: String },
     description: { type: String, nilable: true },
     stargazers_count: { type: Int32 },
     owner: Owner,
@@ -26,6 +29,23 @@ class GithubRepo
       HTML.escape(Emoji.emojize(description))
     else
       nil
+    end
+  end
+
+  def latest_release
+    VERSION_CACHE.fetch("version_#{full_name}") do
+      client = HTTP::Client.new("api.github.com", 443, true)
+      client.basic_auth ENV["GITHUB_USER"], ENV["GITHUB_KEY"]
+      headers = HTTP::Headers.new
+      headers["User-Agent"] = "crystalshards"
+      response = client.get("/repos/#{full_name}/releases", headers)
+      p "pulling..."
+      releases = JSON.parse(response.body)
+      if releases.size > 0
+        releases[0]["tag_name"].to_s
+      else
+        ""
+      end
     end
   end
 

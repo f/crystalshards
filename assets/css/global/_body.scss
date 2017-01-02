@@ -71,6 +71,13 @@
     margin: 15px $padding;
   }
 
+  &_version {
+    float: right;
+    font-size: 0.7em;
+    line-height: 1.25em;
+    opacity: 0.3;
+  }
+
   &_title {
     font-size: toRem(20px);
     color: $color-green;
@@ -113,6 +120,7 @@
 
     li {
       margin-right: 20px;
+      white-space: nowrap;
 
       a {
         display: flex;
