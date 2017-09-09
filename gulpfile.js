@@ -12,7 +12,6 @@ var refreshBrowser = browserSync.reload,
     src = "./assets/",
     dist = "./public/",
     filesScript = [
-        src + "js/lib/jquery.min.js",
         src + "js/main.js"
     ];
 
