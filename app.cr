@@ -40,7 +40,7 @@ end
 
 def fetch_filter(env)
   filter = env.params.query["filter"]?.try(&.to_s.strip.downcase) || ""
-  filter.gsub(" ", "-").gsub(/[^a-z0-9\_\-]/i, "")
+  filter.gsub(" ", "-").gsub(/[^a-z0-9\_\-\.]/i, "")
 end
 
 def fetch_page(env)
